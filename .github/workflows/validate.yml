@@ -1,0 +1,23 @@
+name: Validate daily learning
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate daily notes
+        run: python scripts/validate_daily.py
+      - name: Run day-one lab self-test
+        run: python labs/2026-10-04/git_blob_hash.py --self-test
